@@ -37,6 +37,9 @@ let databaseName = "my-db";
 
 app.post('/update-profile', function (req, res) {
   let userObj = req.body;
+  let response = res
+
+  console.log("connecting to the database...")
 
   MongoClient.connect(mongoUrlLocal, mongoClientOptions, function (err, client) {
     if (err) throw err;
@@ -47,8 +50,11 @@ app.post('/update-profile', function (req, res) {
     let myquery = { userid: 1 };
     let newvalues = { $set: userObj };
 
+    console.log("successfully connected to the user-account database...")
+
     db.collection("users").updateOne(myquery, newvalues, {upsert: true}, function(err, res) {
       if (err) throw err;
+      console.log("successfully updated or inserted user data...")
       client.close();
     });
 
